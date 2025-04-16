@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { AppDataSource } from "./config/database";
+import { Task } from "./entities/Task";
 
 dotenv.config();
 const app = express();
@@ -22,6 +23,26 @@ app.get("/api/v1/db", async (req, res) => {
 		res.status(500).json({ status: "not ok", database: "disconnected", error: error });
 	}
 });
+
+app.post("/api/v1/test-task", async (req, res) => {
+	try {
+	  const taskRepository = AppDataSource.getRepository(Task);
+
+	  const newTask = new Task();
+	  newTask.title = "Test Task";
+	  newTask.description = "This is a test task";
+	  newTask.status = "Todo";
+	  newTask.priority = "Low";
+  
+	  await taskRepository.save(newTask);
+  
+	  const tasks = await taskRepository.find();
+	  
+	  res.json({ message: "Task created successfully", tasks });
+	} catch (error) {
+	  res.status(500).json({ error: 'error to create task', details: error });
+	}
+  });
 
 AppDataSource.initialize()
 	.then(() => {

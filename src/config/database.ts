@@ -1,4 +1,6 @@
 import { DataSource } from "typeorm";
+import { Task } from "../entities/Task"
+import { Note } from "../entities/Note"
 
 export const AppDataSource = new DataSource({
 	type: "mysql",
@@ -7,7 +9,7 @@ export const AppDataSource = new DataSource({
 	username: process.env.DB_USER || "tasksuser",
 	password: process.env.DB_PASSWORD || "taskspassword",
 	database: process.env.DB_NAME || "tasksapi",
-	entities: [],
+	entities: [Task, Note],
 	synchronize: false,
 	logging: false,
 });
