@@ -3,7 +3,6 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { AppDataSource } from "./config/database";
-import { Task } from "./entities/Task";
 import TaskRoutes from "./routes/TaskRoutes"
 import OtherRoutes from "./routes/otherRoutes"
 
