@@ -1,8 +1,11 @@
+import "reflect-metadata"
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { AppDataSource } from "./config/database";
 import { Task } from "./entities/Task";
+import TaskRoutes from "./routes/TaskRoutes"
+import OtherRoutes from "./routes/otherRoutes"
 
 dotenv.config();
 const app = express();
@@ -10,39 +13,8 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
-
-app.get("/api/v1", (req, res) => {
-	res.json({ message: "The api is working" });
-});
-
-app.get("/api/v1/db", async (req, res) => {
-	try {
-		await AppDataSource.query("SELECT 1");
-		res.json({ status: "ok", database: "is connected" });
-	} catch (error) {
-		res.status(500).json({ status: "not ok", database: "disconnected", error: error });
-	}
-});
-
-app.post("/api/v1/test-task", async (req, res) => {
-	try {
-	  const taskRepository = AppDataSource.getRepository(Task);
-
-	  const newTask = new Task();
-	  newTask.title = "Test Task";
-	  newTask.description = "This is a test task";
-	  newTask.status = "Todo";
-	  newTask.priority = "Low";
-  
-	  await taskRepository.save(newTask);
-  
-	  const tasks = await taskRepository.find();
-	  
-	  res.json({ message: "Task created successfully", tasks });
-	} catch (error) {
-	  res.status(500).json({ error: 'error to create task', details: error });
-	}
-  });
+app.use('/api/v1', TaskRoutes);
+app.use('/api/v1', OtherRoutes);
 
 AppDataSource.initialize()
 	.then(() => {
