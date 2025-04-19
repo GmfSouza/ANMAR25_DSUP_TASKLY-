@@ -1,6 +1,6 @@
 import { AppDataSource } from "../config/database";
 import { Router } from "express";
-import { Task } from "../entities/Task";
+import { Task, Status, Priority } from "../entities/Task";
 
 const router = Router();
 
@@ -9,10 +9,10 @@ router.post("/test-task", async (req, res) => {
 		const taskRepository = AppDataSource.getRepository(Task);
 
 		const newTask = new Task();
-		newTask.title = "Test Task3";
-		newTask.description = "This is a test task3";
-		newTask.status = "Todo";
-		newTask.priority = "Medium";
+		newTask.title = "Task 5";
+		newTask.description = "test task";
+		newTask.status = Status.Done;
+		newTask.priority = Priority.Low;
 
 		await taskRepository.save(newTask);
 
