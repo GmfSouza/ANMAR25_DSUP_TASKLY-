@@ -10,6 +10,7 @@ export const AppDataSource = new DataSource({
 	password: process.env.DB_PASSWORD || "taskspassword",
 	database: process.env.DB_NAME || "tasksapi",
 	entities: [Task, Note],
+	migrations: ["migrations/*.ts"],
 	synchronize: false,
 	logging: false,
 });
