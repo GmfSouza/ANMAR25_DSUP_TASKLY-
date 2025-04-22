@@ -1,27 +1,14 @@
-import { AppDataSource } from "../config/database";
 import { Router } from "express";
-import { Task, Status, Priority } from "../entities/Task";
+import { TaskController } from "../controllers/TaskController";
+import { taskValidator } from "../middlewares/taskValidate";
 
 const router = Router();
+const taskController = new TaskController();
 
-router.post("/test-task", async (req, res) => {
-	try {
-		const taskRepository = AppDataSource.getRepository(Task);
-
-		const newTask = new Task();
-		newTask.title = "Task 5";
-		newTask.description = "test task";
-		newTask.status = Status.Done;
-		newTask.priority = Priority.Low;
-
-		await taskRepository.save(newTask);
-
-		const tasks = await taskRepository.find();
-
-		res.json({ message: "Task created successfully", tasks });
-	} catch (error) {
-		res.status(500).json({ error: "error to create task", details: error });
-	}
-});
+router.post("/", taskValidator(), (req, res) => taskController.createTask(req, res));
+router.get("/", (req, res) => taskController.getAllTasks(req, res));
+router.get("/:id", (req, res) => taskController.getTaskById(req, res));
+router.put("/:id", taskValidator(true), (req, res) => taskController.updateTask(req, res));
+router.delete("/:id", (req, res) => taskController.deleteTaskById(req, res));
 
 export default router;
