@@ -4,12 +4,12 @@ import { TaskRepository } from "../repositories/TaskRepository";
 
 export class TaskService {
 	private taskRepository: TaskRepository;
+
 	constructor() {
 		this.taskRepository = new TaskRepository();
 	}
 
 	async createTask(data: TaskDTO): Promise<Task> {
-
 		const task = new Task();
 		task.title = data.title;
 		task.description = data.description;
@@ -20,12 +20,28 @@ export class TaskService {
 		return this.taskRepository.save(task);
 	}
 
-	async getAllTasks(): Promise<Task[]> {
-		return this.taskRepository.findAll();
+	async getAllTasks(
+		page: number = 1,
+		limit: number = 10,
+		status?: Status,
+		priority?: Priority,
+		category?: string
+	): Promise<{ tasks: Task[]; total: number }> {
+		return this.taskRepository.paginationAndFilters(
+			page,
+			limit,
+			status,
+			priority,
+			category
+		);
 	}
 
 	async getTaskById(id: number): Promise<Task | null> {
 		return this.taskRepository.findById(id);
+	}
+
+	async getTasksByStatus(status: Status): Promise<Task[]> {
+		return this.taskRepository.findByStatus(status);
 	}
 
 	async updateTask(id: number, data: Partial<TaskDTO>): Promise<Task | null> {

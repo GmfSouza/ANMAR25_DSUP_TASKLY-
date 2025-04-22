@@ -8,6 +8,7 @@ const taskController = new TaskController();
 router.post("/", taskValidator(), (req, res) => taskController.createTask(req, res));
 router.get("/", (req, res) => taskController.getAllTasks(req, res));
 router.get("/:id", (req, res) => taskController.getTaskById(req, res));
+router.get("/status/:status", (req, res) => taskController.getTasksByStatus(req, res));
 router.put("/:id", taskValidator(true), (req, res) => taskController.updateTask(req, res));
 router.delete("/:id", (req, res) => taskController.deleteTaskById(req, res));
 
