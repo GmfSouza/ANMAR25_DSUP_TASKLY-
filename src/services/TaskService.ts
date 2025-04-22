@@ -9,14 +9,13 @@ export class TaskService {
 	}
 
 	async createTask(data: TaskDTO): Promise<Task> {
-		const dataValidator = TaskSchema.parse(data);
 
 		const task = new Task();
-		task.title = dataValidator.title;
-		task.description = dataValidator.description;
-		task.status = dataValidator.status as Status;
-		task.priority = dataValidator.priority as Priority;
-		task.category = dataValidator.category ?? "";
+		task.title = data.title;
+		task.description = data.description;
+		task.status = data.status as Status;
+		task.priority = data.priority as Priority;
+		task.category = data.category as string;
 
 		return this.taskRepository.save(task);
 	}
