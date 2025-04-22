@@ -4,7 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { AppDataSource } from "./config/database";
 import TaskRoutes from "./routes/TaskRoutes"
-import OtherRoutes from "./routes/otherRoutes"
+import NoteRoutes from "./routes/NoteRoutes"
 
 dotenv.config();
 const app = express();
@@ -12,8 +12,12 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
-app.use('/api/v1', TaskRoutes);
-app.use('/api/v1', OtherRoutes);
+app.use('/tasks', TaskRoutes);
+app.use('/', NoteRoutes);
+app.use((req, res) => {
+	res.status(404).json({ error: "route not found" });
+});
+
 
 AppDataSource.initialize()
 	.then(() => {
