@@ -1,4 +1,4 @@
-﻿# ANMAR25_DSUP_TASKLY-
+﻿# TASKLY
 
 Taskly is a simple RESTful API built with Node.js, Express, TypeORM, and MySQL. It allows you to manage tasks and notes, with features like creating, updating, deleting, and filtering tasks, as well as attaching notes to tasks. The API also supports pagination and filtering for better usability.
 
